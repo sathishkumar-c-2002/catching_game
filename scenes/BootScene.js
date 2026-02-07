@@ -4,10 +4,12 @@ class BootScene extends Phaser.Scene {
     }
 
     preload() {
+        this.load.image('background', 'asset/background.png');
 
     }
 
     create() {
-        this.add.text(180, 320, 'Hello World', { fontSize: '32px', fill: '#000000' }).setOrigin(0.5);
+        console.log("Boot Scene");
+        this.scene.start('StartScene');
     }
 }

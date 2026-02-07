@@ -3,7 +3,7 @@ var config = {
     width: 360,
     height: 640,
     backgroundColor: '#cccccc',
-    scene: [BootScene],
+    scene: [BootScene, StartScene],
     physics: {
         default: 'arcade',
         arcade: {
