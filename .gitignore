@@ -1,6 +1,6 @@
 # Dependencies
 node_modules/
-
+test/
 # Firebase
 .firebase/
 firebase-debug.log*
@@ -11,6 +11,8 @@ firebase-debug.log*
 .idea/
 *.swp
 *.swo
+
+
 
 # OS files
 .DS_Store

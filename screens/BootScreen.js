@@ -16,6 +16,8 @@ class BootScreen extends Phaser.Scene {
         this.load.image('ball', 'asset/ball.png')
         this.load.image('gloves', 'asset/gloves.png')
         this.load.image('fail_icon', 'asset/fail ball.png')
+        this.load.image('play_again_button', 'asset/Button.png')
+        this.load.image('win_text', 'asset/win text.png')
     }
 
     create() {
@@ -23,17 +25,20 @@ class BootScreen extends Phaser.Scene {
 
         WebFont.load({
             custom: {
-                families: ['StickNoBills']
+                families: ['StickNoBills', 'IntimateSummer', 'IntimateSummerScript']
+            },
+            google: {
+                families: ['Poppins:400,700']
             },
             active: () => {
                 console.log('Font loaded!');
-                // this.scene.start('StartScreen');
-                this.scene.start('GameScreen');
+                this.scene.start('StartScreen');
+                // this.scene.start('GameScreen');
             },
             inactive: () => {
                 console.log('Font failed to load');
-                // this.scene.start('StartScreen');
-                this.scene.start('GameScreen');
+                this.scene.start('StartScreen');
+                // this.scene.start('GameScreen');
                 console.log("GameScreen Calling")
             }
         });

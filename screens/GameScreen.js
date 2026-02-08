@@ -17,7 +17,7 @@ class GameScreen extends Phaser.Scene {
         let ball_x;
         let ball_y;
         let game_lifes = 3;
-        let timer = 15;
+        let timer = 30;
 
 
 
@@ -37,7 +37,7 @@ class GameScreen extends Phaser.Scene {
         let timer_board_bg = this.add.image(310, 50, 'score_board_bg');
         timer_board_bg.setScale(0.6);
 
-        let timer_text = this.add.text(295, 25, timer.toString().padStart(2, '0'), {
+        let timer_text = this.add.text(285, 25, timer.toString().padStart(2, '0'), {
             fontSize: '50px',
             fill: '#fff',
             fontFamily: 'StickNoBills'
@@ -47,7 +47,7 @@ class GameScreen extends Phaser.Scene {
             delay: 1000,
             callback: () => {
                 if (timer > 0) {
-                    timer--;
+                    timer -= 1;
                     timer_text.setText(timer.toString().padStart(2, '0'));
                 } else {
                     timer_count.remove();
@@ -181,7 +181,10 @@ class GameScreen extends Phaser.Scene {
         gloves.setScale(0.3);
 
 
+        let glove_click = false;
+
         const PlayerAttempt = () => {
+            glove_click = false;
             if (game_lifes == 1) {
 
                 let fail_ball2 = this.add.image(310, 95, 'fail_icon')
@@ -201,15 +204,13 @@ class GameScreen extends Phaser.Scene {
             let chosen_side = side === 0 ? "left" : "right";
             console.log("Kicking from: " + chosen_side);
 
-            if (game_lifes <= 0) {
+            if (game_lifes <= 0 || timer <= 0) {
                 console.log("Game Over!");
-                this.scene.start('StartScreen', { score: score });
-                return;
-            }
+                timer_count.remove();
+                remaining_tries = false;
 
-            if (timer <= 0) {
-                console.log("Time's up!");
-                this.scene.start('StartScreen', { score: score });
+                // game over ovelay
+                this.scene.launch('GameOverScreen', { score: score });
                 return;
             }
 
@@ -321,9 +322,10 @@ class GameScreen extends Phaser.Scene {
         // let gloves = this.add.image(180, 530, 'gloves');
         // gloves.setScale(0.3);
         this.input.on('pointerdown', () => {
-            if (!remaining_tries) return;
+            if (!remaining_tries || glove_click) return;
 
             if (gloves_x != null && gloves_y != null && touch_side != null) {
+                glove_click = true;
                 this.tweens.add({
                     targets: gloves,
                     x: gloves_x,
