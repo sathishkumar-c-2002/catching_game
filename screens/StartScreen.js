@@ -18,8 +18,8 @@ class StartScreen extends Phaser.Scene {
         start_button.setScale(0.8)
         start_button.setInteractive();
         start_button.on('pointerdown', () => {
-            // this.scene.start('GameScreen')
-            console.log("Click")
+            this.scene.start('GameScreen')
+            console.log("LetsPlay_Click")
         })
 
     }

@@ -1,0 +1,24 @@
+Coding Test – Catching Game
+Task
+Create a simple mobile-friendly HTML5 game where the player catches incoming soccer balls by tapping the screen.
+Game Rules
+●	Soccer balls come toward the player.
+●	When a ball appears, user taps the screen to catch it.
+●	If caught → score increases.
+●	If missed → lose 1 life.
+●	Player has 3 lives.
+●	Game ends when:
+○	Lives become 0 OR
+○	Timer finishes.
+Screens Needed
+1.	Start Screen – Play button
+2.	Game Screen – Ball, gloves, score, timer, lives
+3.	Game Over Screen – Final score & Play Again button
+Tech Stack
+●	HTML5 + JavaScript
+●	Any JS game library is allowed (Phaser / Pixi / CreateJS / Integrated GSAP/ Unity/any other JS frameworks.)
+What to Submit
+●	Source code (GitHub link or zip file)
+●	Simple README on how to run the game
+Timeline
+3 Days to submit
