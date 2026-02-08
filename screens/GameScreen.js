@@ -17,6 +17,9 @@ class GameScreen extends Phaser.Scene {
         let ball_x;
         let ball_y;
         let game_lifes = 3;
+        let timer = 15;
+
+
 
         let background = this.add.image(180, 265, 'gamescreen_background');
         background.setScale(0.51);
@@ -24,6 +27,7 @@ class GameScreen extends Phaser.Scene {
         // // Left Top
         let score_board_bg = this.add.image(50, 50, 'score_board_bg');
         score_board_bg.setScale(0.6);
+
 
         // let initial_score = this.add.image(50, 50, 'initial_score');
         // initial_score.setScale(0.62);
@@ -33,7 +37,6 @@ class GameScreen extends Phaser.Scene {
         let timer_board_bg = this.add.image(310, 50, 'score_board_bg');
         timer_board_bg.setScale(0.6);
 
-        let timer = 30;
         let timer_text = this.add.text(295, 25, timer.toString().padStart(2, '0'), {
             fontSize: '50px',
             fill: '#fff',
@@ -64,6 +67,8 @@ class GameScreen extends Phaser.Scene {
         });
         let life_icon = this.add.image(310, 95, 'life_icon');
         life_icon.setScale(0.6);
+
+
 
         let life_text = this.add.text(185, 70, game_lifes, {
             fontSize: '50px',
@@ -125,7 +130,7 @@ class GameScreen extends Phaser.Scene {
             }
             else {
                 if (life_icon && life_icon.active) {
-                    life_icon.destroy();
+                    // life_icon.destroy();
                 }
                 return false;
             }
@@ -157,6 +162,7 @@ class GameScreen extends Phaser.Scene {
 
         let left_ball = this.add.image(160, 400, 'ball');
         left_ball.setScale(0.3);
+        left_ball.setVisible(false);
 
 
 
@@ -165,16 +171,31 @@ class GameScreen extends Phaser.Scene {
         char_right.setScale(0.8);
         let right_ball = this.add.image(210, 400, 'ball');
         right_ball.setScale(0.3);
+        right_ball.setVisible(false);
 
         let ball_tween;
         let remaining_tries = false;
-        let active_ball; // Track which ball is currently in play
+        let active_ball;
 
         let gloves = this.add.image(180, 530, 'gloves');
         gloves.setScale(0.3);
 
 
         const PlayerAttempt = () => {
+            if (game_lifes == 1) {
+
+                let fail_ball2 = this.add.image(310, 95, 'fail_icon')
+                fail_ball2.setScale(0.6);
+                fail_ball2.setVisible(true);
+                let fail_ball3 = this.add.image(331, 95, 'fail_icon')
+                fail_ball3.setScale(0.6);
+                fail_ball3.setVisible(true);
+            }
+            if (game_lifes == 2) {
+                let fail_ball3 = this.add.image(331, 95, 'fail_icon')
+                fail_ball3.setScale(0.6);
+                fail_ball3.setVisible(true);
+            }
 
             let side = getRandomInt(0, 1);
             let chosen_side = side === 0 ? "left" : "right";
@@ -210,6 +231,15 @@ class GameScreen extends Phaser.Scene {
             gloves.x = 180;
             gloves.y = 530;
             gloves.angle = 0;
+
+            // Show only the active ball, hide the other
+            if (chosen_side === "right") {
+                right_ball.setVisible(true);
+                left_ball.setVisible(false);
+            } else {
+                left_ball.setVisible(true);
+                right_ball.setVisible(false);
+            }
 
             // Character Animation
             if (chosen_side === "right") {

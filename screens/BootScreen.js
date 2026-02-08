@@ -15,6 +15,7 @@ class BootScreen extends Phaser.Scene {
         this.load.image('char_right', 'asset/right side Character.png')
         this.load.image('ball', 'asset/ball.png')
         this.load.image('gloves', 'asset/gloves.png')
+        this.load.image('fail_icon', 'asset/fail ball.png')
     }
 
     create() {
