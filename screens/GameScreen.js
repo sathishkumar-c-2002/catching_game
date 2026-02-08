@@ -321,26 +321,30 @@ class GameScreen extends Phaser.Scene {
                     y: gloves_y,
                     angle: touch_side === 'left' ? -20 : 20,
                     duration: 200,
-                    ease: 'Power2'
-                });
+                    ease: 'Power2',
+                    onComplete: () => {
 
-                let isBlocked = checkGoal({
-                    ball_x: active_ball.x,
-                    ball_y: active_ball.y,
-                    gloves_x: gloves_x,
-                    gloves_y: gloves_y
-                });
+                        let isBlocked = checkGoal({
+                            ball_x: active_ball.x,
+                            ball_y: active_ball.y,
+                            gloves_x: gloves.x,
+                            gloves_y: gloves.y
+                        });
 
-                if (isBlocked) {
-                    if (ball_tween) ball_tween.stop();
-                    // alert("Blocked")
-                    console.log("Blocked")
-                    this.time.delayedCall(1000, PlayerAttempt, [], this);
-                }
-                else {
-                    // alert("Missed")
-                    console.log("Missed")
-                }
+                        if (isBlocked) {
+                            if (ball_tween) ball_tween.stop();
+                            // alert("Blocked")
+                            remaining_tries = false; // Mark as handled
+
+                            console.log("Blocked")
+                            this.time.delayedCall(1000, PlayerAttempt, [], this);
+                        }
+                        else {
+                            // alert("Missed")
+                            console.log("Missed")
+                        }
+                    }
+                });
             }
         });
 
