@@ -98,21 +98,6 @@ class GameScreen extends Phaser.Scene {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        // function checkGoal(input_map) {
-        //     let x_diff = input_map.ball_x - input_map.gloves_x;
-        //     let y_diff = input_map.ball_y - input_map.gloves_y;
-        //     if (x_diff <= 10 && y_diff <= 10) {
-        //         score += 1;
-        //         score_text.setText(score.toString().padStart(2, '0'));
-        //         return true;
-        //     }
-        //     else {
-        //         life_icon.destroy();
-        //         return false;
-        //     }
-
-        // }
-
         function checkGoal(input_map) {
             if (input_map.ball_x === undefined || input_map.ball_y === undefined) {
                 game_lifes -= 1;
@@ -179,6 +164,10 @@ class GameScreen extends Phaser.Scene {
 
         let gloves = this.add.image(180, 530, 'gloves');
         gloves.setScale(0.3);
+
+
+        let footer_rect = this.add.rectangle(330, 610, 30, 30, 0x215524);
+        footer_rect.setDepth(1);
 
 
         let glove_click = false;
