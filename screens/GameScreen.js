@@ -70,11 +70,11 @@ class GameScreen extends Phaser.Scene {
 
 
 
-        let life_text = this.add.text(185, 70, game_lifes, {
-            fontSize: '50px',
-            fill: '#2e9137ff',
+        // let life_text = this.add.text(185, 70, game_lifes, {
+        //     fontSize: '50px',
+        //     fill: '#2e9137ff',
 
-        });
+        // });
 
         function BallRotation(ball_type, x, y) {
             ball_x = x;
@@ -101,7 +101,7 @@ class GameScreen extends Phaser.Scene {
         function checkGoal(input_map) {
             if (input_map.ball_x === undefined || input_map.ball_y === undefined) {
                 game_lifes -= 1;
-                life_text.setText(game_lifes);
+                // life_text.setText(game_lifes);
                 return false;
             }
 
@@ -254,7 +254,7 @@ class GameScreen extends Phaser.Scene {
                                 if (remaining_tries) {
                                     console.log("ball missed");
                                     game_lifes -= 1;
-                                    life_text.setText(game_lifes);
+                                    // life_text.setText(game_lifes);
                                     remaining_tries = false;
 
                                     // after 1 second next try
@@ -285,7 +285,7 @@ class GameScreen extends Phaser.Scene {
                                 if (remaining_tries) {
                                     console.log("ball missed");
                                     game_lifes -= 1;
-                                    life_text.setText(game_lifes);
+                                    // life_text.setText(game_lifes);
                                     remaining_tries = false;
                                     this.time.delayedCall(1000, PlayerAttempt, [], this);
                                 }
