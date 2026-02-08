@@ -85,7 +85,7 @@ class GameScreen extends Phaser.Scene {
                 y: ball_y,
                 scale: 0.6,
                 angle: 360,
-                duration: 1000,
+                duration: 2000,
                 ease: 'Cubic.out'
             }
 
