@@ -134,9 +134,9 @@ class GameScreen extends Phaser.Scene {
 
 
 
-        // // Player Character - Left angle
-        // let char_left = this.add.image(400, 330, 'char_left');
-        // char_left.setScale(0.8);
+        // Player Character - Left angle
+        let char_left = this.add.image(400, 330, 'char_left');
+        char_left.setScale(0.8);
         // this.tweens.add({
         //     targets: char_left,
         //     x: 200,
@@ -155,8 +155,8 @@ class GameScreen extends Phaser.Scene {
         //     }
         // });
 
-        // let left_ball = this.add.image(160, 400, 'ball');
-        // left_ball.setScale(0.3);
+        let left_ball = this.add.image(160, 400, 'ball');
+        left_ball.setScale(0.3);
 
 
 
@@ -165,44 +165,122 @@ class GameScreen extends Phaser.Scene {
         char_right.setScale(0.8);
         let right_ball = this.add.image(210, 400, 'ball');
         right_ball.setScale(0.3);
-        this.tweens.add({
-            targets: char_right,
-            x: 150,
-            duration: 1000,
-            ease: 'Power2',
-            onComplete: () => {
-                // Ball kick animation
-                // this.tweens.add(BallRotation(left_ball, 70, 500));
-                let random_x = getRandomInt(210, 350);
-                let random_y = getRandomInt(400, 600);
-
-                // ball_tween = this.tweens.add(BallRotation(right_ball, random_x, random_y));
-                ball_tween = this.tweens.add({
-                    ...BallRotation(right_ball, random_x, random_y),
-                    onComplete: () => {
-                        if (life_icon && life_icon.active) {
-                            console.log("Missed");
-                            life_icon.destroy();
-                        }
-                        game_lifes -= 1;
-                        life_text.setText(game_lifes);
-                        this.time.delayedCall(1000, PlayerAttempt, [], this);
-                    }
-                });
-
-                score += 1;
-                score_text.setText(score.toString().padStart(2, '0'));
-            }
-        });
-
-
-
 
         let ball_tween;
+        let remaining_tries = false;
+        let active_ball; // Track which ball is currently in play
+
+        let gloves = this.add.image(180, 530, 'gloves');
+        gloves.setScale(0.3);
+
+
+        const PlayerAttempt = () => {
+
+            let side = getRandomInt(0, 1);
+            let chosen_side = side === 0 ? "left" : "right";
+            console.log("Kicking from: " + chosen_side);
+
+            if (game_lifes <= 0) {
+                console.log("Game Over!");
+                this.scene.start('StartScreen', { score: score });
+                return;
+            }
+
+            if (timer <= 0) {
+                console.log("Time's up!");
+                this.scene.start('StartScreen', { score: score });
+                return;
+            }
+
+            remaining_tries = true;
+
+            // Reset positions
+            char_left.x = 400;
+            left_ball.x = 160;
+            left_ball.y = 400;
+            left_ball.angle = 0;
+            left_ball.setScale(0.3);
+
+            char_right.x = -100;
+            right_ball.x = 210;
+            right_ball.y = 400;
+            right_ball.angle = 0;
+            right_ball.setScale(0.3);
+
+            gloves.x = 180;
+            gloves.y = 530;
+            gloves.angle = 0;
+
+            // Character Animation
+            if (chosen_side === "right") {
+                // RIght charecter kicking animation
+                active_ball = right_ball;
+                this.tweens.add({
+                    targets: char_right,
+                    x: 150,
+                    duration: 1000,
+                    ease: 'Power2',
+                    onComplete: () => {
+                        // Ball kick animation
+                        // this.tweens.add(BallRotation(left_ball, 70, 500));
+                        let random_x = getRandomInt(210, 350);
+                        let random_y = getRandomInt(400, 600);
+
+                        // ball_tween = this.tweens.add(BallRotation(right_ball, random_x, random_y));
+                        ball_tween = this.tweens.add({
+                            ...BallRotation(right_ball, random_x, random_y),
+                            onComplete: () => {
+
+                                if (remaining_tries) {
+                                    console.log("ball missed");
+                                    game_lifes -= 1;
+                                    life_text.setText(game_lifes);
+                                    remaining_tries = false;
+
+                                    // after 1 second next try
+                                    this.time.delayedCall(1000, PlayerAttempt, [], this);
+                                }
+                            }
+                        });
+
+                        // score += 1;
+                        // score_text.setText(score.toString().padStart(2, '0'));
+                    }
+                });
+            } else {
+                // Left character kick
+                active_ball = left_ball;
+                this.tweens.add({
+                    targets: char_left,
+                    x: 200,
+                    duration: 1000,
+                    ease: 'Power2',
+                    onComplete: () => {
+                        let random_x = getRandomInt(30, 150);
+                        let random_y = getRandomInt(400, 600);
+
+                        ball_tween = this.tweens.add({
+                            ...BallRotation(left_ball, random_x, random_y),
+                            onComplete: () => {
+                                if (remaining_tries) {
+                                    console.log("ball missed");
+                                    game_lifes -= 1;
+                                    life_text.setText(game_lifes);
+                                    remaining_tries = false;
+                                    this.time.delayedCall(1000, PlayerAttempt, [], this);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        };
+
+
         this.input.on('pointerdown', (pointer) => {
-            touch_side = "left"
+            touch_side = "left";
             if (pointer.x > 180) {
-                touch_side = "right"
+                touch_side = "right";
             }
             gloves_x = pointer.x;
             gloves_y = pointer.y;
@@ -210,9 +288,10 @@ class GameScreen extends Phaser.Scene {
             // alert(`side = ${touch_side} points x: ${pointer.x} y: ${pointer.y}`)
         });
 
-        let gloves = this.add.image(180, 530, 'gloves');
-        gloves.setScale(0.3);
+        // let gloves = this.add.image(180, 530, 'gloves');
+        // gloves.setScale(0.3);
         this.input.on('pointerdown', () => {
+            if (!remaining_tries) return;
 
             if (gloves_x != null && gloves_y != null && touch_side != null) {
                 this.tweens.add({
@@ -223,9 +302,10 @@ class GameScreen extends Phaser.Scene {
                     duration: 200,
                     ease: 'Power2'
                 });
+
                 let isBlocked = checkGoal({
-                    ball_x: right_ball.x,
-                    ball_y: right_ball.y,
+                    ball_x: active_ball.x,
+                    ball_y: active_ball.y,
                     gloves_x: gloves_x,
                     gloves_y: gloves_y
                 });
@@ -241,13 +321,12 @@ class GameScreen extends Phaser.Scene {
                     console.log("Missed")
                 }
             }
-
         });
 
 
 
         // if (game_lifes > 0) PlayerAttempt()
-
+        PlayerAttempt()
 
     }
 }
