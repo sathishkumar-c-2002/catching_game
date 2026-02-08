@@ -207,20 +207,25 @@ class GameScreen extends Phaser.Scene {
 
             // Reset positions
             char_left.x = 400;
+            char_left.setAlpha(1);
             left_ball.x = 160;
             left_ball.y = 400;
             left_ball.angle = 0;
             left_ball.setScale(0.3);
+            left_ball.setAlpha(1);
 
             char_right.x = -100;
+            char_right.setAlpha(1);
             right_ball.x = 210;
             right_ball.y = 400;
             right_ball.angle = 0;
             right_ball.setScale(0.3);
+            right_ball.setAlpha(1);
 
             gloves.x = 180;
             gloves.y = 530;
             gloves.angle = 0;
+            gloves.setAlpha(1);
 
             // Show only the active ball, hide the other
             if (chosen_side === "right") {
@@ -257,6 +262,12 @@ class GameScreen extends Phaser.Scene {
                                     // life_text.setText(game_lifes);
                                     remaining_tries = false;
 
+                                    this.tweens.add({
+                                        targets: [right_ball, char_right, gloves],
+                                        alpha: 0,
+                                        duration: 800
+                                    });
+
                                     // after 1 second next try
                                     this.time.delayedCall(1000, PlayerAttempt, [], this);
                                 }
@@ -287,6 +298,13 @@ class GameScreen extends Phaser.Scene {
                                     game_lifes -= 1;
                                     // life_text.setText(game_lifes);
                                     remaining_tries = false;
+
+                                    this.tweens.add({
+                                        targets: [left_ball, char_left, gloves],
+                                        alpha: 0,
+                                        duration: 800
+                                    });
+
                                     this.time.delayedCall(1000, PlayerAttempt, [], this);
                                 }
                             }
@@ -337,6 +355,13 @@ class GameScreen extends Phaser.Scene {
                             remaining_tries = false; // Mark as handled
 
                             console.log("Blocked")
+
+                            this.tweens.add({
+                                targets: [active_ball, (active_ball === right_ball ? char_right : char_left), gloves],
+                                alpha: 0,
+                                duration: 800
+                            });
+
                             this.time.delayedCall(1000, PlayerAttempt, [], this);
                         }
                         else {

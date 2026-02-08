@@ -66,6 +66,31 @@ class GameOverScreen extends Phaser.Scene {
             this.scene.start('GameScreen');
             console.log("LetsPlay_Click");
         });
+
+        // fade effect
+        overlay.setAlpha(0);
+        win_text.setAlpha(0);
+        scoreLabel.setAlpha(0);
+        Text1.setAlpha(0);
+        Text2.setAlpha(0);
+        Text3.setAlpha(0);
+        play_again_button.setAlpha(0);
+        play_again_text.setAlpha(0);
+
+        // Fade in animation
+        this.tweens.add({
+            targets: overlay,
+            alpha: 0.9,
+            duration: 1000,
+            ease: 'Power2'
+        });
+
+        this.tweens.add({
+            targets: [win_text, scoreLabel, Text1, Text2, Text3, play_again_button, play_again_text],
+            alpha: 1,
+            duration: 1000,
+            ease: 'Power2'
+        });
     }
 
     //     Claim your prize.
